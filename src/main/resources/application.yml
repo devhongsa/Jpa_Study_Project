@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true    #쿼리문이 어떻게 던져지는지 보여줌.
+        format_sql: true  #쿼리를 좀더 보기 편하게 보여줌
+    defer-datasource-initialization: true   # data.sql 먼저 실행
+server:
+  port: 8070
