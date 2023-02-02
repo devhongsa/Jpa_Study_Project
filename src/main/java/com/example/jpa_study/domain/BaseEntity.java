@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @MappedSuperclass //여기서 정의된 createAt, updatedAt을 BaseEntity를 상속받은 Entity의 컬럼으로 사용하겠다는 뜻.
 @EntityListeners(value = AuditingEntityListener.class)
 public class BaseEntity implements Auditable {
+
+    // CreatedDate, LastModifiedDate 어노테이션이, MyEntityListener에서 prepesist preupdate 기능을 함.
     @CreatedDate
     private LocalDateTime createdAt;
 

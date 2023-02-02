@@ -1,6 +1,8 @@
 package com.example.jpa_study.repository;
 
+import com.example.jpa_study.domain.Gender;
 import com.example.jpa_study.domain.User;
+import com.example.jpa_study.domain.UserHistory;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,8 @@ class UserRepositoryTest {
     
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserHistoryRepository userHistoryRepository;
 
     @Test
     void crud() {
@@ -82,5 +86,36 @@ class UserRepositoryTest {
         userRepository.findFirstByName("hongsa",Sort.by(Sort.Order.desc("id"), Sort.Order.asc("email")));
 
         userRepository.findByName("martin", PageRequest.of(0, 1, Sort.by(Sort.Order.desc("id")))).getContent();
+    }
+
+    @Test
+    void userRelationTestWithUserHistory() {
+        User user = new User();
+        user.setName("david");
+        user.setEmail("david@fastcampus.com");
+        user.setGender(Gender.MALE);
+        userRepository.save(user);
+
+        //Update
+        user.setName("daniel");
+        userRepository.save(user);
+
+        //Update
+        user.setEmail("daniel@fastcampus.com");
+        userRepository.save(user);
+
+        //userHistoryRepository.findAll().forEach(System.out::println);
+
+//        List<UserHistory> result = userHistoryRepository.findByUserId(
+//                userRepository.findByEmail("daniel@fastcampus.com").getId()
+//        );
+
+        //User Entity에서 OneToMany로 userHistories를 선언해줬기때문에 이런식으로 사용가능.
+        // 즉 User 에서 데이터를 보다가 이 유저의 userHistory를 보고싶을때 이렇게 사용하면됨. User Entity에서 OneToMany 관계설정필요
+        List<UserHistory> result = userRepository.findByEmail("daniel@fastcampus.com").getUserHistories();
+        result.forEach(System.out::println);
+
+        // 특정 userHistory 데이터에서 이 history의 주인인 User의 정보를 가져오는 과정. UserHistory에서 ManyToOne 관계설정필요
+        System.out.println(userHistoryRepository.findAll().get(0).getUser());
     }
 }

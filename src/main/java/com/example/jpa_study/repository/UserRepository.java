@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //query method이름 findByName 에서 Name이 User class에 정의되어 있어야함. 대소문자 상관없음.
     //User findByName(String name); //찾으려는 값이 중복이 있으면 에러를 일으킴.
     List<User> findByName(String name); //List로 리턴해야 중복데이터를 모두 찾아줌.
+    User findByEmail(String email);
 
     //limit 쿼리메소드
     List<User> findFirst2ByName(String name);
@@ -33,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     //IsNotNull 쿼리메소드
     List<User> findByIdIsNotNull();
-    List<User> findByAddressIsNotEmpty(); // 잘 사용하지는 않음
+//    List<User> findByAddressIsNotEmpty(); // 잘 사용하지는 않음
 
     // IN, NOT IN 쿼리메소드
     List<User> findByNameIn(List<String> names);

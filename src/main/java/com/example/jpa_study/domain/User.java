@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,6 +37,18 @@ public class User extends BaseEntity {
     @NonNull
     private String email;
 
+    //EnumType 에서 String으로 해주는 이유는 나중에 GENDER ENUM에서 다른 요소를 추가하게되면
+    //디비에는 요소 순서대로의 인덱스값으로 저장되어있기때문에, 다른요소가 들어와버리면 인덱스값이 바뀌게 된다.
+    //그래서 ORDINAL 말고 STRING으로 해줘야함.
+    @Enumerated(value = EnumType.STRING)
+    private Gender gender;
+
+    //User Entity에서 데이터를 보다가 이 User의 UserHistory 데이터를 봐야하는 상황에서는 User Entity에서 OneToMany로 UserHistory Entity와 관계를 설정해주면 된다.
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false) // OneToMany관계를 맺은 Entity와 join할 컬럼을 지정해줌, insertable, updatable를 false로 한 이유는 User Entity에서는 userHistories를 읽기만 해야되기 때문임.
+    List<UserHistory> userHistories = new ArrayList<>(); // null값 방지하게 위해 new ArrayList<>() 할당해줌
+
+
 //    @Column(name="createdAt", updatable = false)
 //    @CreatedDate // AuditingEntityListener 어노테이션설정으로, prePersist기능실행
 //    private LocalDateTime createdAt;
@@ -43,17 +56,11 @@ public class User extends BaseEntity {
 //    @LastModifiedDate // AuditingEntityListener 어노테이션설정으로, prePersist기능실행
 //    private LocalDateTime updatedAt;
 
-    //EnumType 에서 String으로 해주는 이유는 나중에 GENDER ENUM에서 다른 요소를 추가하게되면
-    //디비에는 요소 순서대로의 인덱스값으로 저장되어있기때문에, 다른요소가 들어와버리면 인덱스값이 바뀌게 된다.
-    //그래서 ORDINAL 말고 STRING으로 해줘야함.
-    @Enumerated(value = EnumType.STRING)
-    private Gender gender;
-
 
     //One: User, Many: Address, User가 Address를 여러개 가질 수 있음.
     //EAGER : Entity정보를 미리 읽어옴. LAZY : 요청할때 읽어옴.
-    @OneToMany(fetch=FetchType.EAGER)
-    private List<Address> address;
+//    @OneToMany(fetch=FetchType.EAGER)
+//    private List<Address> address;
 
 
     /////Entity Listener/////
