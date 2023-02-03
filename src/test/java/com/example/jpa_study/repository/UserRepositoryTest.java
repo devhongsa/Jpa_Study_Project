@@ -73,6 +73,18 @@ class UserRepositoryTest {
     }
 
     @Test
+    void crudTest() {
+        User user = new User();
+        user.setName("hongsalion");
+        user.setEmail("gmail.com");
+        user.setGender(Gender.MALE);
+
+        userRepository.save(user);
+
+        userRepository.findAll().forEach(System.out::println);
+    }
+
+    @Test
     void queryMethodTest() {
         //System.out.println(userRepository.findByName("hongsa"));
 

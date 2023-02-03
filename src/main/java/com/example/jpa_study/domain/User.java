@@ -45,8 +45,14 @@ public class User extends BaseEntity {
 
     //User Entity에서 데이터를 보다가 이 User의 UserHistory 데이터를 봐야하는 상황에서는 User Entity에서 OneToMany로 UserHistory Entity와 관계를 설정해주면 된다.
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false) // OneToMany관계를 맺은 Entity와 join할 컬럼을 지정해줌, insertable, updatable를 false로 한 이유는 User Entity에서는 userHistories를 읽기만 해야되기 때문임.
-    List<UserHistory> userHistories = new ArrayList<>(); // null값 방지하게 위해 new ArrayList<>() 할당해줌
+    @JoinColumn(name = "user_id", insertable = false, updatable = false) // OneToMany관계를 맺은 Entity와 join할 컬럼을 지정해줌, 관계를 맺은 Entity에 userId가 FK로 존재하고 있고 name에 user_id 컬럼이름을 입력, insertable, updatable를 false로 한 이유는 User Entity에서는 userHistories를 읽기만 해야되기 때문임.
+    @ToString.Exclude //stackoverflow 순환참조 오류 방지와 딱 필요한 정보만 출력하기위함.
+    private List<UserHistory> userHistories = new ArrayList<>(); // null값 방지하게 위해 new ArrayList<>() 할당해줌
+
+    @OneToMany
+    @JoinColumn(name="user_id")
+    @ToString.Exclude
+    private List<Review> reviews = new ArrayList<>();
 
 
 //    @Column(name="createdAt", updatable = false)

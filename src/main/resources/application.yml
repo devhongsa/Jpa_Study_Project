@@ -1,6 +1,8 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:mysql://localhost:3306/jpa
+    username: root
+    password: Dnjfchs23
   h2:
     console:
       enabled: true
@@ -10,5 +12,11 @@ spring:
         show_sql: true    #쿼리문이 어떻게 던져지는지 보여줌.
         format_sql: true  #쿼리를 좀더 보기 편하게 보여줌
     defer-datasource-initialization: true   # data.sql 먼저 실행
+    generate-ddl: true # Entity설정대로 ddl쿼리문으로 테이블생성해줌
+    hibernate:
+      ddl-auto: create-drop
+  sql:
+    init:
+      mode: always  #mysql사용시 data.sql 실행시키려면 필요함. h2디비쓸때는 설정안해줘도 됨.
 server:
   port: 8070
