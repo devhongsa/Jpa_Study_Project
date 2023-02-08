@@ -23,5 +23,10 @@ public class Publisher extends BaseEntity {
 
     @OneToMany
     @JoinColumn(name = "publisher_id",insertable = false, updatable = false)
+    @ToString.Exclude
     private List<Book> books = new ArrayList<>();
+
+    public void addBook(Book book){
+        this.books.add(book);
+    }
 }

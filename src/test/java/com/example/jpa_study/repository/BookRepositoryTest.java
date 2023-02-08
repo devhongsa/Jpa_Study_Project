@@ -47,6 +47,39 @@ class BookRepositoryTest {
 
     }
 
+    @Test
+    //@Transactional
+    void bookCascadeTest() {
+        Book book = new Book();
+        book.setName("JPA 초격차 패키지");
+
+        Publisher publisher = new Publisher();
+        publisher.setName("패스트캠퍼스");
+
+        book.setPublisher(publisher);
+        bookRepository.save(book);
+
+        //밑에코드는 Book Entity에서 cascade를 설정하면 필요가 없게됨.
+        //publisher.getBooks().add(book);
+        //publisher.addBook(book);
+        //publisherRepository.save(publisher);
+
+        System.out.println("books : " + bookRepository.findAll());
+        System.out.println("publishers : " + publisherRepository.findAll());
+
+        Book book1 = bookRepository.findById(1L).get();
+        book1.getPublisher().setName("슬로우캠퍼스");
+
+        bookRepository.save(book1);
+
+        System.out.println("publishers : " + publisherRepository.findAll());
+
+        bookRepository.deleteById(1L);
+
+        System.out.println("books : " + bookRepository.findAll());
+        System.out.println("publishers : " + publisherRepository.findAll());
+    }
+
     private void givenBookAndReview() {
         givenReview(givenUser(),givenBook(givenPublisher()));
     }

@@ -45,7 +45,7 @@ public class Book extends BaseEntity{
     @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //Persist는 Book객체에 대하여 insert가 일어날때 연관관계가 있는 Entity에도 자동으로 데이터 삽입해줌. Merge는 update, Remove는 delete시 연관된 Entity정보까지도 삭제함.
     @ToString.Exclude
     private Publisher publisher;
 

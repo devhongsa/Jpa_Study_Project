@@ -14,7 +14,7 @@ spring:
     defer-datasource-initialization: true   # data.sql 먼저 실행
     generate-ddl: true # Entity설정대로 ddl쿼리문으로 테이블생성해줌
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create-drop # test단계에서 사용하는 설정. 디비테이블을 만들었다가 다시 삭제해줌.
   sql:
     init:
       mode: always  #mysql사용시 data.sql 실행시키려면 필요함. h2디비쓸때는 설정안해줘도 됨.
